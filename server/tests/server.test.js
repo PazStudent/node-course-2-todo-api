@@ -155,7 +155,7 @@ describe('PATCh /todos/:id' , ()=> {
   it('should update the todo', (done) => {
     var hexId = todos[0]._id.toHexString();
     var changes = {
-      text: 'Test B',
+      text: 'Test A',
       completed: true
     };
     request(app)
@@ -171,7 +171,7 @@ describe('PATCh /todos/:id' , ()=> {
   it('should clear completeAt when todo is not completed.',(done) =>{
     var hexId = todos[1]._id.toHexString();
     var changes = {
-      text: 'Test A',
+      text: 'Test B',
       completed: false
     };
     request(app)
