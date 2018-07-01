@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 var UserSchema = new mongoose.Schema({
   email: {
@@ -70,6 +71,24 @@ UserSchema.statics.findByToken = function (token) {
     'tokens.access': 'auth'
   });
 };
+
+UserSchema.pre('save' , function (next) {
+  console.log('Started save.');
+  var user = this;
+  if(user.isModified('password')){
+    console.log('Password is modefied.');
+    bcrypt.genSalt(10 , (err,salt) => {
+      bcrypt.hash(user.password , salt , (err , hash) => {
+        user.password = hash;
+        console.log('Hash Completed, Saving.');
+        next();
+      });
+    }); 
+  } else{
+    console.log('Password not modefied, skipping.');
+    next();
+  }
+});
 
 var User = mongoose.model('User' , UserSchema);
 
