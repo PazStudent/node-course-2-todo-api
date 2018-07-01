@@ -73,19 +73,19 @@ UserSchema.statics.findByToken = function (token) {
 };
 
 UserSchema.pre('save' , function (next) {
-  console.log('Started save.');
+  
   var user = this;
   if(user.isModified('password')){
-    console.log('Password is modefied.');
+    
     bcrypt.genSalt(10 , (err,salt) => {
       bcrypt.hash(user.password , salt , (err , hash) => {
         user.password = hash;
-        console.log('Hash Completed, Saving.');
+        
         next();
       });
     }); 
   } else{
-    console.log('Password not modefied, skipping.');
+    
     next();
   }
 });
